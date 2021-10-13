@@ -6,7 +6,7 @@
 char*
 fmtname(char *path)
 {
-  static char buf[DIRSIZ+1];
+  static char buf[DIRSIZ+1];  //#define DIRSIZ 14  in fs.h
   char *p;
 
   // Find first character after last slash.
@@ -35,6 +35,7 @@ ls(char *path)
     return;
   }
 
+  /*fstat函数获得已在描述符fd上打开文件的有关信息*/
   if(fstat(fd, &st) < 0){
     fprintf(2, "ls: cannot stat %s\n", path);
     close(fd);
@@ -59,6 +60,8 @@ ls(char *path)
         continue;
       memmove(p, de.name, DIRSIZ);
       p[DIRSIZ] = 0;
+
+      /*stat返回与buf这个文件有关的信息结构*/
       if(stat(buf, &st) < 0){
         printf("ls: cannot stat %s\n", buf);
         continue;
